@@ -9,3 +9,7 @@
 .cor{
     background-color: #218fa0 !important;
 }
+
+.click{
+    cursor: pointer;
+}
