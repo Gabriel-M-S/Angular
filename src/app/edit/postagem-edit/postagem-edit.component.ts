@@ -18,40 +18,41 @@ export class PostagemEditComponent implements OnInit {
   listaTemas: tema[]
   idTema: number
 
-
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private postagemService: PostagemService,
-    private temaService: TemaService) { }
+    private temaService: TemaService
+  ) { }
 
   ngOnInit(){
 
     window.scroll(0,0)
-    
+
     if(environment.token == ''){
-      this.router.navigate(["/entrar"])
-      this.findAllTemas()
+      alert('Faça o login novamente')
+      this.router.navigate(['/entrar'])
+    }
+
+    let id = this.route.snapshot.params['id']
+    this.findByIdPostagem(id)
+    this.findAllTemas()
   }
 
-  let id =  this.route.snapshot.params['id']
-  this.findByIdPostagem(id)
-
-  }
-
-  findByIdPostagem(id: number){
-    this.postagemService.getByIdPostagem(id).subscribe((resp: Postagem)=>{
-      this.postagem=resp
+  findByIdPostagem(id:number){
+    this.postagemService.getByIdPostagem(id).subscribe((resp: Postagem) => {
+      this.postagem = resp
     })
   }
 
   findByIdTema(){
-    this.temaService.getByIdTema(this.idTema).subscribe((resp: tema)=>{
+    this.temaService.getByIdTema(this.idTema).subscribe((resp: tema) => {
       this.tema = resp
     })
   }
 
   findAllTemas(){
-    this.temaService.getAllTema().subscribe((resp: tema[])=>{
+    this.temaService.getAllTema().subscribe((resp: tema[]) => {
       this.listaTemas = resp
     })
   }
@@ -59,10 +60,12 @@ export class PostagemEditComponent implements OnInit {
   atualizar(){
     this.tema.id = this.idTema
     this.postagem.tema = this.tema
-    this.postagemService.putPostagem(this.postagem).subscribe((resp: Postagem)=>{
+
+    this.postagemService.putPostagem(this.postagem).subscribe((resp: Postagem) => {
       this.postagem = resp
       alert('Postagem atualizada com sucesso!')
       this.router.navigate(['/inicio'])
     })
   }
+
 }
